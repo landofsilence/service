@@ -2,12 +2,14 @@ package com.meetball.demo.domain;
 
 import java.util.List;
 
-public class User {
+public class Driver {
     private String userName;
     private String name;
     private String password;
-    private String carNumber;
+    private String driverLicense;
     private int age;
+    private boolean work;
+    private boolean pass;
     private String telephone;
     private List<String> listOrderId;
 
@@ -35,12 +37,28 @@ public class User {
         this.password = password;
     }
 
-    public String getCarNumber() {
-        return carNumber;
+    public String getDriverLicense() {
+        return driverLicense;
     }
 
-    public void setCarNumber(String carNumber) {
-        this.carNumber = carNumber;
+    public void setDriverLicense(String driverLicense) {
+        this.driverLicense = driverLicense;
+    }
+
+    public boolean isWork() {
+        return work;
+    }
+
+    public void setWork(boolean work) {
+        this.work = work;
+    }
+
+    public boolean isPass() {
+        return pass;
+    }
+
+    public void setPass(boolean pass) {
+        this.pass = pass;
     }
 
     public int getAge() {

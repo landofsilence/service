@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员主页</title>
+</head>
+<body>
+<table style="margin:auto auto; width: 560px" border="2" >
+    <tr>
+        <th style="width: 80px">用户名</th>
+        <th style="width: 80px">姓名</th>
+        <th style="width: 60px">年龄</th>
+        <th style="width: 100px">电话号</th>
+        <th style="width: 100px">驾驶证</th>
+        <th style="width: 140px">操作</th>
+    </tr>
+    <tr th:each="driverUnpass : ${driverUnpassList}">
+        <td th:text="${driverUnpass.userName}"></td>
+        <td th:text="${driverUnpass.name}"></td>
+        <td th:text="${driverUnpass.age}"></td>
+        <td th:text="${driverUnpass.telephone}"></td>
+        <td th:text="${driverUnpass.driverLicense}"></td>
+        <td>
+            <a th:href="@{/admin/passDriver(userName=${driverUnpass.userName})}">通过</a>
+            <a th:href="@{/admin/deleteDriver(userName=${driverUnpass.userName})}">不通过</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6" style="color: #ff0000;" th:text="${msg}"></td>
+    </tr>
+</table>
+</body>
+</html>

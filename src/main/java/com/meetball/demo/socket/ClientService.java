@@ -74,15 +74,25 @@ public class ClientService implements Runnable {
                         jsonObject.put("result", 1);
                         orderService.finishOrder(json);
                         this.sendMessage("<finishOrderRe>" + separator + jsonObject + separator + "</finishOrderRe>");
-                    } else if (message.equals("<getOrderList>")) {      //根据用户名获取订单号
+                    } else if (message.equals("<getUserOrderList>")) {      //根据用户名获取订单号
                         String s = in.readLine();
                         String json = "";
-                        while (!s.equals("</getOrderList>")) {
+                        while (!s.equals("</getUserOrderList>")) {
                             json = json + s + System.getProperty("line.separator");
                             s = in.readLine();
                         }
-                        String result = orderService.getOrderList(json);
-                        this.sendMessage("<getOrderListRe>" + separator + result + separator + "</getOrderListRe>");
+                        String result = orderService.getUserOrderList(json);
+                        this.sendMessage("<getUserOrderListRe>" + separator + result + separator + "</getUserOrderListRe>");
+
+                    } else if (message.equals("<getDriverOrderList>")) {      //根据用户名获取订单号
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</getDriverOrderList>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        String result = orderService.getDriverOrderList(json);
+                        this.sendMessage("<getDriverOrderListRe>" + separator + result + separator + "</getDriverOrderListRe>");
 
                     } else if (message.equals("<getOrderInfo>")) {      //根据订单ID获取订单详情
                         String s = in.readLine();

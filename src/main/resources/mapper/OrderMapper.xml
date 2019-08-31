@@ -3,12 +3,16 @@
 
 <mapper namespace="com.meetball.demo.persistence.OrderMapper">
     <insert id="insertOrder" parameterType="com.meetball.demo.domain.Order">
-          INSERT INTO orders (orderId, ownerName, driverName, carNumber, beginStr, endStr, amount)
-              VALUES   (#{orderId}, #{ownerName}, #{driverName}, #{carNumber}, #{beginStr}, #{endStr}, #{amount})
+          INSERT INTO orders (orderId, ownerName, driverName, driverLicense, beginStr, endStr, amount)
+              VALUES   (#{orderId}, #{ownerName}, #{driverName}, #{driverLicense}, #{beginStr}, #{endStr}, #{amount})
     </insert>
 
-    <select id="getOrderList" resultType="String">
-        SELECT orderId FROM orders WHERE (ownerName = #{userName} OR driverName = #{userName})
+    <select id="getUserOrderList" resultType="String">
+        SELECT orderId FROM orders WHERE ownerName = #{userName}
+    </select>
+
+    <select id="getDriverOrderList" resultType="String">
+        SELECT orderId FROM orders WHERE driverName = #{userName}
     </select>
 
     <select id="getOrderInfo" resultType="com.meetball.demo.domain.Order">

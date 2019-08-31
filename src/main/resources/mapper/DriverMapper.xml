@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meetball.demo.persistence.DriverMapper">
+    <select id="getDriverUnpassList" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM drivers WHERE pass = 0
+    </select>
+
+    <update id="passDriver">
+        UPDATE drivers SET pass = 1 WHERE userName = #{userName}
+    </update>
+
+    <delete id="deleteDriver">
+        DELETE FROM drivers WHERE userName = #{userName}
+    </delete>
+</mapper>

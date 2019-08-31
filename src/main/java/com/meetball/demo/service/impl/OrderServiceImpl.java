@@ -117,11 +117,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String getOrderList(String orderJson) {
+    public String getUserOrderList(String orderJson) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         String userName = jsonObject.getString("userName");
         JSONObject returnJson = new JSONObject();
-        List<String> orderList = orderMapper.getOrderList(userName);
+        List<String> orderList = orderMapper.getUserOrderList(userName);
+        returnJson.put("orderList", orderList);
+        return returnJson.toString();
+    }
+
+    @Override
+    public String getDriverOrderList(String orderJson) {
+        JSONObject jsonObject = JSONObject.fromObject(orderJson);
+        String userName = jsonObject.getString("userName");
+        JSONObject returnJson = new JSONObject();
+        List<String> orderList = orderMapper.getDriverOrderList(userName);
         returnJson.put("orderList", orderList);
         return returnJson.toString();
     }

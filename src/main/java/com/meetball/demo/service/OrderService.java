@@ -16,6 +16,7 @@ public interface OrderService {
     public void publishOrder2List(String orderJson);
     public void takeOrder(String orderJson);
     public void finishOrder(String orderJson);
-    public String getOrderList(String orderJson);
+    public String getUserOrderList(String orderJson);
+    public String getDriverOrderList(String orderJson);
     public String getOrderInfo(String orderJson);
 }
