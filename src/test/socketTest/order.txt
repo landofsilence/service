@@ -1,0 +1,46 @@
+put -r E:/FTP/Android
+
+<publishOrder2List>
+{
+  "order": {
+    "beginStr": "",
+    "carNumber": "AE1101",
+    "driverName": "",
+    "endLat": 11.01,
+    "endLon": 11.01,
+    "endStr": "",
+    "orderId": "",
+    "ownerLat": 10.01,
+    "ownerLon": 10.01,
+    "ownerName": "river"
+  },
+  "cookie": "uknssqyhrq"
+}
+</publishOrder2List>
+
+<takeOrder>
+{
+  "orderId": "river20190830152934",
+  "userName": "lzcmhm",
+  "cookie": "uknssqyhrq"
+}
+</takeOrder>
+
+<finishOrder>
+{
+  "orderId": "river20190830152934",
+  "cookie": "uknssqyhrq"
+}
+</finishOrder>
+
+<getOrderList>
+{
+  "userName": "mhm"
+}
+</getOrderList>
+
+<getOrderInfo>
+{
+  "orderId": "rivers20190829184240"
+}
+</getOrderInfo>
