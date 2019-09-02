@@ -3,7 +3,7 @@
 
 <mapper namespace="com.meetball.demo.persistence.DriverMapper">
     <select id="getDriverUnpassList" resultType="com.meetball.demo.domain.Driver">
-        SELECT * FROM drivers WHERE pass = 0
+        SELECT * FROM users, drivers WHERE users.userName = drivers.userName AND pass = 0
     </select>
 
     <update id="passDriver">

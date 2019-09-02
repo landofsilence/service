@@ -3,13 +3,13 @@ package com.meetball.demo.domain;
 import java.util.List;
 
 public class User {
-    private String userName;
-    private String name;
-    private String password;
-    private String carNumber;
-    private int age;
-    private String telephone;
-    private List<String> listOrderId;
+    protected String userName;
+    protected String name;
+    protected String password;
+    protected String carNumber;
+    protected int age;
+    protected String telephone;
+    protected List<String> listOrderId;
 
     public String getUserName() {
         return userName;
