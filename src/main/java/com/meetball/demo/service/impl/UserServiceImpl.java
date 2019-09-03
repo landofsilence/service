@@ -1,6 +1,7 @@
 package com.meetball.demo.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.meetball.demo.domain.Match;
 import com.meetball.demo.domain.User;
@@ -26,7 +27,6 @@ public class UserServiceImpl implements UserService {
 
     String separator = System.getProperty("line.separator");
 
-    public File file = null;
 
     private static HashMap<String, ClientService> socketMap;//存放数据为，userName-对应ClientService
 
@@ -246,6 +246,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+
     public String getmatchinfo(String matchJson){
         JSONObject jsonObject = JSONObject.fromObject(matchJson);
         int matchID = (int)jsonObject.get("matchID");
@@ -268,32 +270,7 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-    public JSONObject getImage(String jsonStr){
-        JSONObject jsonObject = JSONObject.fromObject(jsonStr);
-        int type = jsonObject.getInt("type");
-        String param = jsonObject.getString("param");
-        String url = "deafault";
-        if(type == 1){
-            url =  "avatar_" + param;
-        }
-        else if(type == 2){
-            url =  param;
-        }
 
-
-        JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("name",url);
-
-        String fileseparator = System.getProperty("file.separator");
-        file = new File(ClientService.getAbsolutePath() + fileseparator + url + ".jpg");
-        jsonObject1.put("size",file.length());
-        if(!file.exists())
-        //用户没有上传过图片，返回-1
-            jsonObject1.put("result",-1);
-        else
-            jsonObject1.put("result",1);
-        return jsonObject1;
-    }
 
 
 }

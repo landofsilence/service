@@ -18,6 +18,7 @@ public class ClientService implements Runnable {
     private String message = "";
     public String userName;
     String separator = System.getProperty("line.separator");
+    File file;
 
     /*@Autowired
     private com.meetball.demo.service.UserService userService;*/
@@ -135,10 +136,24 @@ public class ClientService implements Runnable {
                         this.sendMessage( "<updateResult>" + separator + result + separator + "</updateResult>");
                     } else if(message.equals("<uploadImage>")){
                         String s = in.readLine();
-                        if(s.equals("1"))
-                        {
-                            saveImg("avatar_" + userName);
+                        String json = "";
+                        while (!s.equals("</uploadImage>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
                         }
+                        JSONObject jsonObject = JSONObject.fromObject(json);
+                        String type = (String) jsonObject.get("type");
+                        int size = (int) jsonObject.get("size");
+                        if(type.equals("1"))
+                        {
+                            type = "avatar_" + userName;
+                        }
+                        saveImg(type,size);
+                        JSONObject returnJson = sendReturnImage(type);
+                        this.sendMessage( "<sendImage>" + separator + returnJson.toString() + separator + "</sendImage>");
+                        if(returnJson.getInt("result") != -1)
+                            sendFile(file);
+
                     } else if (message.equals("<downloadImage>")) {
                         String s = in.readLine();
                         String json = "";
@@ -146,10 +161,10 @@ public class ClientService implements Runnable {
                             json = json + s + System.getProperty("line.separator");
                             s = in.readLine();
                         }
-                        JSONObject result = userService.getImage(json);
+                        JSONObject result = getImage(json);
                         this.sendMessage( "<sendImage>" + separator + result.toString() + separator + "</sendImage>");
                         if(result.getInt("result") != -1)
-                            sendFile(userService.file);
+                            sendFile(file);
                     } else {
                         System.out.println(message);
                     }
@@ -235,14 +250,11 @@ public class ClientService implements Runnable {
         }
     }
 
-    public void saveImg(String imageName) {
+    public void saveImg(String imageName,int size) {
         //获取上传图片
         try {
 
                 DataInputStream dataInput = new DataInputStream(socket.getInputStream());
-
-                Long size0 = dataInput.readLong();
-                int size = size0.intValue();
                 byte[] data = new byte[size];
                 int len = 0;
                 while (len < size) {
@@ -310,4 +322,44 @@ public class ClientService implements Runnable {
 
     return  null;
 }
+
+    public JSONObject sendReturnImage(String imageName){
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("name",imageName);
+        String fileseparator = System.getProperty("file.separator");
+        file = new File(ClientService.getAbsolutePath() + fileseparator + imageName + ".jpg");
+        jsonObject1.put("size",file.length());
+        if(!file.exists())
+            //用户没有上传过图片，返回-1
+            jsonObject1.put("result",-1);
+        else
+            jsonObject1.put("result",1);
+        return jsonObject1;
+    }
+    public JSONObject getImage(String jsonStr){
+        JSONObject jsonObject = JSONObject.fromObject(jsonStr);
+        int type = jsonObject.getInt("type");
+        String param = jsonObject.getString("param");
+        String url = "deafault";
+        if(type == 1){
+            url =  "avatar_" + param;
+        }
+        else if(type == 2){
+            url =  param;
+        }
+
+
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("name",url);
+
+        String fileseparator = System.getProperty("file.separator");
+        file = new File(ClientService.getAbsolutePath() + fileseparator + url + ".jpg");
+        jsonObject1.put("size",file.length());
+        if(!file.exists())
+            //用户没有上传过图片，返回-1
+            jsonObject1.put("result",-1);
+        else
+            jsonObject1.put("result",1);
+        return jsonObject1;
+    }
 }
