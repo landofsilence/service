@@ -233,8 +233,16 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonObject = JSONObject.fromObject(matchJson);
         String cookie = (String)jsonObject.get("cookie");
         String userName = getInstanceCMap().get(cookie);
+        JSONObject returnJson = new JSONObject();
+        if(userName != null){
         getInstanceSMap().put(userName,clientService);
-        return userName;
+        clientService.userName = userName;
+        returnJson.put("result",1);
+        returnJson.put("userName",userName);
+        }else{
+            returnJson.put("result",-1);
+        }
+        return returnJson.toString();
 
     }
 

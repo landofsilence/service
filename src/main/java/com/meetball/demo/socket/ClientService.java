@@ -16,7 +16,7 @@ public class ClientService implements Runnable {
     public Socket socket;
     private BufferedReader in = null;
     private String message = "";
-    String userName;
+    public String userName;
     String separator = System.getProperty("line.separator");
 
     /*@Autowired
@@ -121,7 +121,8 @@ public class ClientService implements Runnable {
                             json = json + s + System.getProperty("line.separator");
                             s = in.readLine();
                         }
-                        userName = userService.client(json,this);
+                       String result = userService.client(json,this);
+                        this.sendMessage("<clientRe>"  + separator + result + separator + "</clientRe>");
 
                     } else if (message.equals("<updateInfo>")) {
                         String s = in.readLine();
