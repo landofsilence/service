@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public static UserServiceImpl instance;
 
     String separator = System.getProperty("line.separator");
-    
+
     private static HashMap<String, ClientService> socketMap;//存放数据为，userName-对应ClientService
 
     private static HashMap<String,String> cookieMap;//存放数据为,cookie-对应userName
