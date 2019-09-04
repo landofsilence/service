@@ -11,6 +11,9 @@ public interface DriverService {
     public List<Driver> getDriverUnpassList();
     public boolean passDriver(String userName);
     public boolean deleteDriver(String userName);
+    public boolean getDriverExist(String userName);
+    public Driver driverApplyLogin(String userName, String password);
+    public boolean submitDriverApply(Driver driver);
     //public String match(String matchJson);
     //public String client(String matchJson, ClientService clientService);
     //public String getmatchinfo(String matchJson);

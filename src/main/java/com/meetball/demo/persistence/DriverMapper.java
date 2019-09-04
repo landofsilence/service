@@ -15,6 +15,16 @@ public interface DriverMapper {
 
     public boolean deleteDriver(String userName);
 
+    public Driver getDriverExist(String userName);
+
+    public Driver getDriver(String userName);
+
+    public Driver getDriverPass(String userName);
+
+    public Driver driverApplyLogin(String userName, String password);
+
+    public boolean submitDriverApply(Driver driver);
+
     //public List<Match> getAllMatch(@Param("method")int method);
 
     //public void updateMatch(Match match);

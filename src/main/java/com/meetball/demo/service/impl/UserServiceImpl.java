@@ -3,8 +3,10 @@ package com.meetball.demo.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.meetball.demo.domain.Driver;
 import com.meetball.demo.domain.Match;
 import com.meetball.demo.domain.User;
+import com.meetball.demo.persistence.DriverMapper;
 import com.meetball.demo.persistence.UserMapper;
 import com.meetball.demo.service.UserService;
 import com.meetball.demo.socket.ClientService;
@@ -21,12 +23,13 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
+    private DriverMapper driverMapper;
+    @Autowired
     private UserMapper usermapper;
 
     public static UserServiceImpl instance;
 
     String separator = System.getProperty("line.separator");
-
 
     private static HashMap<String, ClientService> socketMap;//存放数据为，userName-对应ClientService
 
@@ -101,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private static String fromNameGetCookie(String value) {
+    public static String fromNameGetCookie(String value) {
         Set set = getInstanceCMap().entrySet();
 
         Iterator it = set.iterator();
@@ -114,7 +117,6 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
-
 
     public String getNewCookie(){
         String string = "";
@@ -133,7 +135,6 @@ public class UserServiceImpl implements UserService {
 
 
     }
-
 
     public String match(String matchJson){
         JSONObject jsonObject = JSONObject.fromObject(matchJson);
@@ -246,8 +247,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-
     public String getmatchinfo(String matchJson){
         JSONObject jsonObject = JSONObject.fromObject(matchJson);
         int matchID = (int)jsonObject.get("matchID");
@@ -270,7 +269,24 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-
-
-
+    @Override
+    public String driverLogin(Driver driver) {
+        JSONObject returnJson = new JSONObject();
+        if (driverMapper.getDriverPass(driver.getUserName()) != null){
+            Driver loginDriver = driverMapper.getDriver(driver.getUserName());
+            if (loginDriver != null){
+                returnJson.put("result",1);
+                String cookie = fromNameGetCookie(loginDriver.getUserName());
+                if(cookie == null)
+                    cookie = getNewCookie();
+                returnJson.put("cookie",cookie);
+                getInstanceCMap().put(cookie,loginDriver.getUserName());
+            } else {
+                returnJson.put("result",2);
+            }
+        } else {
+            returnJson.put("result",3);
+        }
+        return returnJson.toString();
+    }
 }

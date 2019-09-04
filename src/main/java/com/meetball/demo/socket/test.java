@@ -10,8 +10,8 @@ import java.net.Socket;
 
 //这个是为了测试服务器的临时w
 public class test {
-   //private static final String HOST = "120.79.35.179";//服务器地址
-   private static final String HOST = "127.0.0.1";//服务器地址
+    //private static final String HOST = "120.78.141.62";//服务器地址
+    private static final String HOST = "127.0.0.1";
     private static final int PORT = 2836;//连接端口号
 
 

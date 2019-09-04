@@ -44,3 +44,11 @@ put -r E:/FTP/Android
   "orderId": "rivers20190829184240"
 }
 </getOrderInfo>
+
+
+<downloadImage>
+{
+    "type":2,
+    "param":"avatar_river"
+}
+</downloadImage>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>司机申请登录</title>
+</head>
+<body>
+
+<form action="/driver/login" method="post">
+    <table style="margin:auto auto;">
+        <tr>
+            <td>
+                用户名
+            </td>
+            <td>
+                <input type="text" name="userName">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                密码
+            </td>
+            <td>
+                <input type="password" name="password">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="color: #ff0000;" th:text="${msg}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit">
+            </td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

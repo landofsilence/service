@@ -37,4 +37,19 @@ public class DriverServiceImpl implements DriverService {
     public boolean deleteDriver(String userName) {
         return driverMapper.deleteDriver(userName);
     }
+
+    @Override
+    public boolean getDriverExist(String userName) {
+        return driverMapper.getDriverExist(userName) != null;
+    }
+
+    @Override
+    public Driver driverApplyLogin(String userName, String password) {
+        return driverMapper.driverApplyLogin(userName, password);
+    }
+
+    @Override
+    public boolean submitDriverApply(Driver driver) {
+        return driverMapper.submitDriverApply(driver);
+    }
 }

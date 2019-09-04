@@ -7,8 +7,8 @@
     </select>
 
     <insert id="insertUser" parameterType="com.meetball.demo.domain.User">
-          INSERT INTO users (userName, name, password, age, driverLicense, telephone)
-              VALUES   (#{userName}, #{name}, #{password}, #{age}, #{driverLicense}, #{telephone})
+          INSERT INTO users (userName, name, password, age, carNumber, telephone)
+              VALUES   (#{userName}, #{name}, #{password}, #{age}, #{carNumber}, #{telephone})
     </insert>
 
 

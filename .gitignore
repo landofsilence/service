@@ -27,3 +27,9 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+driver.log
+driver.log.2019-08-31.0.gz
+driver.log.2019-09-03.0.gz
+src/main/java/com/meetball/demo/service/impl/changeInfoActivity.java
+src/main/resources/static/
+static/images/avatar_river.jpg
