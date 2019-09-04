@@ -289,4 +289,14 @@ public class UserServiceImpl implements UserService {
         }
         return returnJson.toString();
     }
+
+    @Override
+    public String getDriverInfo(String userName){
+        JSONObject returnJson = new JSONObject();
+        User target = driverMapper.getDriver(userName);
+        target.setPassword(null);
+        returnJson.put("user",target);
+        return returnJson.toString();
+
+    }
 }
