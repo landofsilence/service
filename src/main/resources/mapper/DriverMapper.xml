@@ -13,4 +13,16 @@
     <delete id="deleteDriver">
         DELETE FROM drivers WHERE userName = #{userName}
     </delete>
+
+    <select id="getDriverExist" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM drivers WHERE userName = #{userName}
+    </select>
+
+    <select id="driverApplyLogin" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM users WHERE users.password = #{password} AND users.userName = #{userName};
+    </select>
+
+    <insert id="submitDriverApply" parameterType="com.meetball.demo.domain.Driver">
+        INSERT INTO drivers (userName, driverLicense) values (#{userName}, #{driverLicense})
+    </insert>
 </mapper>
