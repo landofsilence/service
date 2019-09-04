@@ -17,6 +17,10 @@ public interface DriverMapper {
 
     public Driver getDriverExist(String userName);
 
+    public Driver getDriver(String userName);
+
+    public Driver getDriverPass(String userName);
+
     public Driver driverApplyLogin(String userName, String password);
 
     public boolean submitDriverApply(Driver driver);

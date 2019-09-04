@@ -6,6 +6,10 @@
         SELECT * FROM users, drivers WHERE users.userName = drivers.userName AND pass = 0
     </select>
 
+    <select id="getDriver" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM users, drivers WHERE users.userName = drivers.userName AND users.userName = #{userName}
+    </select>
+
     <update id="passDriver">
         UPDATE drivers SET pass = 1 WHERE userName = #{userName}
     </update>
@@ -16,6 +20,10 @@
 
     <select id="getDriverExist" resultType="com.meetball.demo.domain.Driver">
         SELECT * FROM drivers WHERE userName = #{userName}
+    </select>
+
+    <select id="getDriverPass" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM drivers WHERE userName = #{userName} AND pass = 1
     </select>
 
     <select id="driverApplyLogin" resultType="com.meetball.demo.domain.Driver">
