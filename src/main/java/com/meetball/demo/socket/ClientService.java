@@ -10,6 +10,8 @@ import org.springframework.util.ResourceUtils;
 import java.io.*;
 import java.net.Socket;
 
+import static java.lang.Thread.sleep;
+
 
 public class ClientService implements Runnable {
     //该服务线程用来守候特定的socket
@@ -148,11 +150,18 @@ public class ClientService implements Runnable {
                         {
                             type = "avatar_" + userName;
                         }
+                        sendMessage("ready");
                         saveImg(type,size);
                         JSONObject returnJson = sendReturnImage(type);
                         this.sendMessage( "<sendImage>" + separator + returnJson.toString() + separator + "</sendImage>");
-                        if(returnJson.getInt("result") != -1)
+                        if(returnJson.getInt("result") != -1){
+                            String s1 = in.readLine();
+                            System.out.println(s1);
+                            if(s1.equals("ready"))
+                            {
                             sendFile(file);
+                            }
+                        }
 
                     } else if (message.equals("<downloadImage>")) {
                         String s = in.readLine();
@@ -163,8 +172,14 @@ public class ClientService implements Runnable {
                         }
                         JSONObject result = getImage(json);
                         this.sendMessage( "<sendImage>" + separator + result.toString() + separator + "</sendImage>");
-                        if(result.getInt("result") != -1)
-                            sendFile(file);
+                        if(result.getInt("result") != -1){
+                            String s1 = in.readLine();
+                            System.out.println(s1);
+                            if(s1.equals("ready"))
+                            {
+                                sendFile(file);
+                            }
+                        }
                     } else {
                         System.out.println(message);
                     }
@@ -230,7 +245,7 @@ public class ClientService implements Runnable {
     public void sendFile(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         //BufferedInputStream bi=new BufferedInputStream(new InputStreamReader(new FileInputStream(file),"GBK"));
-        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());//client.getOutputStream()返回此套接字的输出流
+        OutputStream dos = socket.getOutputStream();//client.getOutputStream()返回此套接字的输出流
         try {
             //文件名、大小等属性
             System.out.println(file.length());
@@ -238,9 +253,11 @@ public class ClientService implements Runnable {
             // 开始传输文件
             byte[] bytes = new byte[1024];
             int length = 0;
+            int count = 0;
 
             while ((length = fis.read(bytes, 0, bytes.length)) != -1) {
                 dos.write(bytes, 0, length);
+                count = count + length;
                 dos.flush();
             }
 

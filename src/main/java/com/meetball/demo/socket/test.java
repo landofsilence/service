@@ -48,7 +48,6 @@ public class test {
              if(read.equals("ok")){
                  break;
              }
-
             }
 
             while(true) {
