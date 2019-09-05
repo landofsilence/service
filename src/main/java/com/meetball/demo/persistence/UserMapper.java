@@ -13,6 +13,10 @@ public interface UserMapper {
 
     public void insertUser(User user);
 
+    public void setImage(@Param("userName")String userName,@Param("imageNum")int imageNum);
+
+    public int getImageNum(@Param("userName")String userName);
+
     //public List<Match> getAllMatch(@Param("method")int method);
 
     //public void updateMatch(Match match);

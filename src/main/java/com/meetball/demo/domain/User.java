@@ -10,6 +10,15 @@ public class User {
     protected int age;
     protected String telephone;
     protected List<String> listOrderId;
+    protected int imageNum;
+
+    public int getImageNum() {
+        return imageNum;
+    }
+
+    public void setImageNum(int imageNum) {
+        this.imageNum = imageNum;
+    }
 
     public String getUserName() {
         return userName;
