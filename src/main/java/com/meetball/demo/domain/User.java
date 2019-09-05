@@ -1,8 +1,9 @@
 package com.meetball.demo.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     protected String userName;
     protected String name;
     protected String password;
@@ -10,6 +11,15 @@ public class User {
     protected int age;
     protected String telephone;
     protected List<String> listOrderId;
+    protected int imageNum;
+
+    public int getImageNum() {
+        return imageNum;
+    }
+
+    public void setImageNum(int imageNum) {
+        this.imageNum = imageNum;
+    }
 
     public String getUserName() {
         return userName;

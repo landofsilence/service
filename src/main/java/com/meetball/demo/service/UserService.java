@@ -17,6 +17,7 @@ public interface UserService {
     public String getInfo(String userName);
     public String driverLogin(Driver driver);
     public String getDriverInfo(String userName);
+    public String updateUserInfo(String json);
     //public String match(String matchJson);
     //public String client(String matchJson, ClientService clientService);
     //public String getmatchinfo(String matchJson);

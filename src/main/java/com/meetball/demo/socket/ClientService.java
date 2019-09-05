@@ -107,6 +107,16 @@ public class ClientService implements Runnable {
                         String result = orderService.getOrderInfo(json);
                         this.sendMessage("<getOrderInfoRe>" + separator + result + separator + "</getOrderInfoRe>");
 
+                    } else if (message.equals("<updateUserInfo>")) {      //根据用户名获取订单号
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</updateUserInfo>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        String result = userService.updateUserInfo(json);
+                        this.sendMessage("<updateUserInfoRe>" + separator + result + separator + "</updateUserInfoRe>");
+
                     } else if (message.equals("<getInfo>")) {
                         String s = in.readLine();
                         String json = "";
@@ -126,6 +136,16 @@ public class ClientService implements Runnable {
                         }
                        String result = userService.client(json,this);
                         this.sendMessage("<clientRe>"  + separator + result + separator + "</clientRe>");
+
+                    } else if (message.equals("<deleteImg>")) {
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</deleteImg>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        String result = userService.deleteImage(userName,json);
+                        this.sendMessage("<deleteImgRe>"  + separator + result + separator + "</deleteImgRe>");
 
                     } else if (message.equals("<updateInfo>")) {
                         String s = in.readLine();
@@ -149,6 +169,9 @@ public class ClientService implements Runnable {
                         if(type.equals("1"))
                         {
                             type = "avatar_" + userName;
+                        }else if (type.equals("2")){
+                            int number = userService.addImage(userName);
+                            type = userName + "_image_" +  number;
                         }
                         sendMessage("ready");
                         saveImg(type,size);

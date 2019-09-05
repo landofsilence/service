@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
         for(int i = 0; i < 10; i++) {
             // 得到随机字母
             char c = (char) ((Math.random() * 26) + 97);
-            // 拼接成字符串
+            // 拼接成字符串de'l
             string += (c + "");
         }
         //若cookie不存在，可直接采用，若存在则递归获取
@@ -265,6 +265,33 @@ public class UserServiceImpl implements UserService {
         return returnJson.toString();
     }
 
+    public int addImage(String userName){
+        int number = usermapper.getImageNum(userName);
+        usermapper.setImage(userName,number + 1);
+        return number + 1;
+    }
+
+    public String deleteImage(String userName,String matchJson){
+        JSONObject jsonObject = JSONObject.fromObject(matchJson);
+        int order = jsonObject.getInt("order");
+        int type = jsonObject.getInt("type");
+        if(type == 2)
+        {
+            int number = usermapper.getImageNum(userName);
+            String fileseparator = System.getProperty("file.separator");
+            File beDeleted = new File(ClientService.getAbsolutePath() + fileseparator + userName + "_image_" +  order + ".jpg");
+            delFile(beDeleted);
+            File last = new File(ClientService.getAbsolutePath() + fileseparator + userName + "_image_" +  number + ".jpg");
+            last.renameTo(beDeleted);
+            usermapper.setImage(userName,number - 1);
+        }
+        JSONObject returnJson = new JSONObject();
+        returnJson.put("result",1);
+        returnJson.put("order",order);
+        return returnJson.toString();
+
+    }
+
     public static UserServiceImpl getInstance(){
         return instance;
     }
@@ -298,5 +325,39 @@ public class UserServiceImpl implements UserService {
         returnJson.put("user",target);
         return returnJson.toString();
 
+    }
+
+    static boolean delFile(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.isFile()) {
+            return file.delete();
+        } else {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                delFile(f);
+            }
+            return file.delete();
+        }
+    }
+
+    @Override
+    public String updateUserInfo(String json) {
+        JSONObject jsonInfo = JSONObject.fromObject(json);
+        JSONObject returnJson = new JSONObject();
+        User user = new User();
+        user.setUserName(jsonInfo.getString("userName"));
+        user.setAge(jsonInfo.getInt("age"));
+        user.setCarNumber(jsonInfo.getString("carNumber"));
+
+        if (usermapper.updateUserInfo(user)){
+            returnJson.put("result",1);
+        } else {
+            returnJson.put("result",0);
+        }
+
+        return returnJson.toString();
     }
 }

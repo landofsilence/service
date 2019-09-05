@@ -2,6 +2,7 @@ package com.meetball.demo.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.meetball.demo.domain.Driver;
 import com.meetball.demo.domain.Order;
 import com.meetball.demo.domain.User;
 import net.sf.json.JSONObject;
@@ -33,6 +34,18 @@ public class Controllers {
         String userName = request.getParameter("userName");
         String passwd = request.getParameter("password");
         return userService.login(userName,passwd);
+
+    }
+
+    @ResponseBody
+    @RequestMapping("/driverLogin")
+    public String driverLogin(HttpServletRequest request, HttpServletResponse response) {
+        String userName = request.getParameter("userName");
+        String passwd = request.getParameter("password");
+        Driver driver = new Driver();
+        driver.setUserName(userName);
+        driver.setPassword(passwd);
+        return userService.driverLogin(driver);
 
     }
 

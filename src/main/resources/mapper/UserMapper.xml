@@ -11,5 +11,17 @@
               VALUES   (#{userName}, #{name}, #{password}, #{age}, #{carNumber}, #{telephone})
     </insert>
 
+    <update id="setImage">
+        update users set imageNum = #{imageNum} where userName = #{userName}
+    </update>
+
+    <update id="updateUserInfo" parameterType="com.meetball.demo.domain.User">
+        UPDATE users SET age = #{age}, carNumber = #{carNumber} where userName = #{userName}
+    </update>
+
+    <select id="getImageNum" resultType="int">
+        SELECT imageNum FROM users WHERE userName = #{userName}
+    </select>
+
 
 </mapper>

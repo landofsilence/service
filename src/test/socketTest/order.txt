@@ -26,6 +26,14 @@ put -r E:/FTP/Android
 }
 </takeOrder>
 
+<updateUserInfo>
+{
+  "userName": "river",
+  "age": 21,
+  "carNumber": "AE011"
+}
+</updateUserInfo>
+
 <finishOrder>
 {
   "orderId": "river20190830152934",
@@ -33,11 +41,11 @@ put -r E:/FTP/Android
 }
 </finishOrder>
 
-<getOrderList>
+<getUserOrderList>
 {
-  "userName": "mhm"
+  "userName": "river"
 }
-</getOrderList>
+</getUserOrderList>
 
 <getOrderInfo>
 {

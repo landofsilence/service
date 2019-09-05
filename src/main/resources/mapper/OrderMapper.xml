@@ -7,12 +7,12 @@
               VALUES   (#{orderId}, #{ownerName}, #{driverName}, #{driverLicense}, #{beginStr}, #{endStr}, #{amount}, #{ownerLon}, #{ownerLat}, #{endLon}, #{endLat})
     </insert>
 
-    <select id="getUserOrderList" resultType="String">
-        SELECT orderId FROM orders WHERE ownerName = #{userName}
+    <select id="getUserOrderList" resultType="com.meetball.demo.domain.Order">
+        SELECT * FROM orders WHERE ownerName = #{userName}
     </select>
 
-    <select id="getDriverOrderList" resultType="String">
-        SELECT orderId FROM orders WHERE driverName = #{userName}
+    <select id="getDriverOrderList" resultType="com.meetball.demo.domain.Order">
+        SELECT * FROM orders WHERE driverName = #{userName}
     </select>
 
     <select id="getOrderInfo" resultType="com.meetball.demo.domain.Order">
