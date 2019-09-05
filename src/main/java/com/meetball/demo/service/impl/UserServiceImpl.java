@@ -35,11 +35,19 @@ public class UserServiceImpl implements UserService {
 
     private static HashMap<String,String> cookieMap;//存放数据为,cookie-对应userName
 
+    private static HashMap<String,String> driverMap;//存放数据为,cookie-对应driver的userName，使用司机登录将只记录在这张表
+
     public static HashMap<String,String> getInstanceCMap(){//控制单例cookiemap
         if(cookieMap == null)
             cookieMap = new HashMap<String,String>();
         return cookieMap;
     }
+    public static HashMap<String,String> getInstanceDMap(){//driverMap
+        if(driverMap == null)
+            driverMap = new HashMap<String,String>();
+        return driverMap;
+    }
+
 
     public static HashMap<String,ClientService> getInstanceSMap(){//控制单例cookiemap
         if(socketMap == null)
@@ -106,6 +114,20 @@ public class UserServiceImpl implements UserService {
 
     public static String fromNameGetCookie(String value) {
         Set set = getInstanceCMap().entrySet();
+
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            if (entry.getValue().equals(value)) {
+                String s = (String) entry.getKey();
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public static String fromNameGetCookie_driver(String value) {
+        Set set = getInstanceDMap().entrySet();
 
         Iterator it = set.iterator();
         while (it.hasNext()) {
@@ -235,10 +257,18 @@ public class UserServiceImpl implements UserService {
         String cookie = (String)jsonObject.get("cookie");
         String userName = getInstanceCMap().get(cookie);
         JSONObject returnJson = new JSONObject();
+        if(userName == null){
+            userName = getInstanceDMap().get(cookie);
+            clientService.isUser = false;
+            returnJson.put("result",2);
+        }else{
+            clientService.isUser = true;
+            returnJson.put("result",1);
+        }
+
         if(userName != null){
         getInstanceSMap().put(userName,clientService);
         clientService.userName = userName;
-        returnJson.put("result",1);
         returnJson.put("userName",userName);
         }else{
             returnJson.put("result",-1);
@@ -303,11 +333,11 @@ public class UserServiceImpl implements UserService {
             Driver loginDriver = driverMapper.getDriver(driver.getUserName());
             if (loginDriver != null){
                 returnJson.put("result",1);
-                String cookie = fromNameGetCookie(loginDriver.getUserName());
+                String cookie = fromNameGetCookie_driver(loginDriver.getUserName());
                 if(cookie == null)
                     cookie = getNewCookie();
                 returnJson.put("cookie",cookie);
-                getInstanceCMap().put(cookie,loginDriver.getUserName());
+                getInstanceDMap().put(cookie,loginDriver.getUserName());
             } else {
                 returnJson.put("result",2);
             }
