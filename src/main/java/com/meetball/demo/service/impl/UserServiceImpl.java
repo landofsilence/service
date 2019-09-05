@@ -301,12 +301,12 @@ public class UserServiceImpl implements UserService {
         JSONObject returnJson = new JSONObject();
         if (driverMapper.getDriverPass(driver.getUserName()) != null){
             Driver loginDriver = driverMapper.getDriver(driver.getUserName());
-            if (loginDriver != null){
-                returnJson.put("result",1);
-                String cookie = fromNameGetCookie(loginDriver.getUserName());
+            if (loginDriver != null && driver.getPassword().equals(loginDriver.getPassword())){
+                String cookie = fromNameGetCookie(driver.getUserName());
                 if(cookie == null)
                     cookie = getNewCookie();
                 returnJson.put("cookie",cookie);
+                returnJson.put("result",1);
                 getInstanceCMap().put(cookie,loginDriver.getUserName());
             } else {
                 returnJson.put("result",2);
