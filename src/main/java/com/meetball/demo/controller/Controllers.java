@@ -46,7 +46,6 @@ public class Controllers {
         driver.setUserName(userName);
         driver.setPassword(passwd);
         return userService.driverLogin(driver);
-
     }
 
     @ResponseBody

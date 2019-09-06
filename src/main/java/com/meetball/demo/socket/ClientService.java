@@ -19,6 +19,7 @@ public class ClientService implements Runnable {
     private BufferedReader in = null;
     private String message = "";
     public String userName;
+    public boolean isUser = true;
     String separator = System.getProperty("line.separator");
     File file;
 
@@ -84,10 +85,14 @@ public class ClientService implements Runnable {
                             json = json + s + System.getProperty("line.separator");
                             s = in.readLine();
                         }
-                        String result = orderService.getUserOrderList(json);
-                        this.sendMessage("<getUserOrderListRe>" + separator + result + separator + "</getUserOrderListRe>");
+                        String result;
+                        if(isUser)
+                            result = orderService.getUserOrderList(json);
+                        else
+                            result = orderService.getDriverOrderList(json);
+                         this.sendMessage("<getUserOrderListRe>" + separator + result + separator + "</getUserOrderListRe>");
 
-                    } else if (message.equals("<getDriverOrderList>")) {      //根据用户名获取订单号
+                    } /*else if (message.equals("<getDriverOrderList>")) {      //根据用户名获取订单号
                         String s = in.readLine();
                         String json = "";
                         while (!s.equals("</getDriverOrderList>")) {
@@ -97,7 +102,7 @@ public class ClientService implements Runnable {
                         String result = orderService.getDriverOrderList(json);
                         this.sendMessage("<getDriverOrderListRe>" + separator + result + separator + "</getDriverOrderListRe>");
 
-                    } else if (message.equals("<getOrderInfo>")) {      //根据订单ID获取订单详情
+                    } */else if (message.equals("<getOrderInfo>")) {      //根据订单ID获取订单详情
                         String s = in.readLine();
                         String json = "";
                         while (!s.equals("</getOrderInfo>")) {
