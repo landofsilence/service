@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.meetball.demo.domain.Driver;
 import com.meetball.demo.domain.Match;
+import com.meetball.demo.domain.Order;
 import com.meetball.demo.domain.User;
 import com.meetball.demo.persistence.DriverMapper;
 import com.meetball.demo.persistence.UserMapper;
@@ -263,10 +264,15 @@ public class UserServiceImpl implements UserService {
             clientService.isUser = false;
             returnJson.put("result",2);
         }else{
-            if (OrderServiceImpl.getInstance().getOrderExist(userName)){
-                returnJson.put("published",true);
+            Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
+            if (order!=null){
+                if(order.getDriverName()==null)
+                    returnJson.put("published",1);
+                else{
+                    returnJson.put("published",2);
+                }
             } else {
-                returnJson.put("published",false);
+                returnJson.put("published",0);
             }
             clientService.isUser = true;
             returnJson.put("result",1);

@@ -182,6 +182,15 @@ public class OrderServiceImpl implements OrderService {
         }
         return result;
     }
+    public Order getOrderExist_Order(String ownerName) {
+        Order result = null;
+        for (int i = 0; i < orderList.size(); i++){
+            if (orderList.get(i).getOwnerName().equals(ownerName)){
+                result = orderList.get(i);
+            }
+        }
+        return result;
+    }
 
     @Override
     public String getOrder(String orderJson) {
