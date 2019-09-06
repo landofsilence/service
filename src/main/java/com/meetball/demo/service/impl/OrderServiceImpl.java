@@ -69,10 +69,7 @@ public class OrderServiceImpl implements OrderService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String ownerName = order.getOwnerName();
-        System.out.println("cookie ======================== " + cookie);
-        System.out.println("ownerName ======================== " + ownerName);
         order.setOrderId(order.getOwnerName() + sdf.format(date));
-        order.setBeginStr(date);
 
         JSONObject returnJson = new JSONObject();
         if (getOrderExist(ownerName)){
@@ -179,6 +176,17 @@ public class OrderServiceImpl implements OrderService {
         return index;
     }
 
+    public Order getDriverOrderExist(String ownerName) {
+        Order result = null;
+        for (int i = 0; i < orderList.size(); i++){
+            if (orderList.get(i).getDriverName().equals(ownerName)){
+                result = orderList.get(i);
+                break;
+            }
+        }
+        return result;
+    }
+
     public boolean getOrderExist(String ownerName) {
         boolean result = false;
         for (int i = 0; i < orderList.size(); i++){
@@ -194,6 +202,7 @@ public class OrderServiceImpl implements OrderService {
         for (int i = 0; i < orderList.size(); i++){
             if (orderList.get(i).getOwnerName().equals(ownerName)){
                 result = orderList.get(i);
+                break;
             }
         }
         return result;

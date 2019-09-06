@@ -262,6 +262,16 @@ public class UserServiceImpl implements UserService {
         if(userName == null){
             userName = getInstanceDMap().get(cookie);
             clientService.isUser = false;
+            Order order = OrderServiceImpl.getInstance().getDriverOrderExist(userName);
+            if (order!=null){
+                if(order.getBeginStr().isEmpty())
+                    returnJson.put("published",1);
+                else{
+                    returnJson.put("published",2);
+                }
+            } else {
+                returnJson.put("published",0);
+            }
             returnJson.put("result",2);
         }else{
             Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
