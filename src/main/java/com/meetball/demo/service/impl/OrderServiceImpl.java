@@ -13,17 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
-    private Map<String, Order> orderList = new HashMap<String, Order>();
+    private List<Order> orderList = new ArrayList<Order>();
 
     public static OrderServiceImpl instance;
     String separator = System.getProperty("line.separator");
@@ -51,12 +48,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<String, Order> getOrderList() {
+    public List<Order> getOrderList() {
         return orderList;
     }
 
     @Override
-    public void updateOrderList(Map<String, Order> newList) {
+    public void updateOrderList(List<Order> newList) {
         orderList = newList;
     }
 
@@ -76,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
         order.setBeginStr(date);
 
         JSONObject returnJson = new JSONObject();
-        orderList.put(order.getOrderId(), order);
+        orderList.add(order);
         returnJson.put("orderList",orderList);
         System.out.println(returnJson.toString());
     }
@@ -89,11 +86,11 @@ public class OrderServiceImpl implements OrderService {
         String userName = jsonObject.getString("userName");
 
         Gson gson = new Gson();
-        Order order = orderList.get(orderId);
+        Order order = getOrderByID(orderId);
         order.setDriverName(userName);
 
         JSONObject returnJson = new JSONObject();
-        orderList.put(order.getOrderId(), order);
+        orderList.add(order);
         returnJson.put("orderList",orderList);
         System.out.println(returnJson.toString());
     }
@@ -105,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
         String orderId = jsonObject.getString("orderId");
 
         Gson gson = new Gson();
-        Order order = orderList.get(orderId);
+        Order order = getOrderByID(orderId);
         Date date = new Date();
         order.setEndStr(date);
 
@@ -142,6 +139,37 @@ public class OrderServiceImpl implements OrderService {
         String orderId = jsonObject.getString("orderId");
         JSONObject returnJson = new JSONObject();
         Order order = orderMapper.getOrderInfo(orderId);
+        returnJson.put("order", order);
+        return returnJson.toString();
+    }
+
+    public Order getOrderByID(String orderId) {
+        Order order = null;
+        for (int i = 0; i < orderList.size(); i++){
+            if (orderList.get(i).getOrderId().equals(orderId)){
+                order = orderList.get(i);
+            }
+        }
+        return order;
+    }
+
+    @Override
+    public String getOrder(String orderJson) {
+        JSONObject jsonObject = JSONObject.fromObject(orderJson);
+        double lat = jsonObject.getDouble("lat");
+        System.out.println("lat ================== " + lat);
+        double lon = jsonObject.getDouble("lon");
+        int index = jsonObject.getInt("index");
+        JSONObject returnJson = new JSONObject();
+        Order order = null;
+        for (int i = index; i < orderList.size(); i++){
+            order = orderList.get(i);
+            if (order.getOwnerLat() < lat){  //判断是否在司机一定距离内，先随便写一下
+                System.out.println("i =============== " + i);
+                break;
+            }
+            order = null;
+        }
         returnJson.put("order", order);
         return returnJson.toString();
     }

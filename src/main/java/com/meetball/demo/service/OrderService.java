@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    public Map<String, Order> getOrderList();
-    public void updateOrderList(Map<String, Order> newList);
+    public List<Order> getOrderList();
+    public void updateOrderList(List<Order> newList);
 
     public void publishOrder2List(String orderJson);
     public void takeOrder(String orderJson);
@@ -19,4 +19,5 @@ public interface OrderService {
     public String getUserOrderList(String orderJson);
     public String getDriverOrderList(String orderJson);
     public String getOrderInfo(String orderJson);
+    public String getOrder(String orderJson);
 }

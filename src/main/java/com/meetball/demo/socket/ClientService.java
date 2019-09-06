@@ -122,6 +122,16 @@ public class ClientService implements Runnable {
                         String result = userService.updateUserInfo(json);
                         this.sendMessage("<updateUserInfoRe>" + separator + result + separator + "</updateUserInfoRe>");
 
+                    } else if (message.equals("<getOrder>")) {
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</getOrder>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        JSONObject jsonObject = JSONObject.fromObject(json);
+                        String result = orderService.getOrder(jsonObject.toString());
+                        this.sendMessage( "<getOrderRe>" + separator + result + separator + "</getOrderRe>");
                     } else if (message.equals("<getInfo>")) {
                         String s = in.readLine();
                         String json = "";

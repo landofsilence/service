@@ -26,7 +26,7 @@ public class Controllers {
     @Autowired
     private OrderService orderService;
 
-    private Map<String, Order> orderList;
+    private List<Order> orderList;
 
     @ResponseBody
     @RequestMapping("/login")
@@ -103,7 +103,7 @@ public class Controllers {
         order.setBeginStr(date);
 
         orderList = orderService.getOrderList();
-        orderList.put(order.getOrderId(), order);
+        orderList.add(order);
 
         orderService.updateOrderList(orderList);
         return "1";
