@@ -67,6 +67,20 @@ public class ClientService implements Runnable {
                         }
                         orderService.takeOrder(json);
                         this.sendMessage("<takeOrderRe>" + separator + "1" + separator + "</takeOrderRe>");
+                    } else if (message.equals("<askMyOrder>")) {         //接受订单
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</askMyOrder>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        JSONObject jsonObject = JSONObject.fromObject(json);
+                        String userName = jsonObject.getString("userName");
+                        JSONObject returnObject = new JSONObject();
+                        returnObject.put("order", orderService.getOrderExist_Order(userName));
+                        returnObject.put("isSelf",true);
+                        this.sendMessage("<getOrderByIDRe>" + separator + returnObject.toString() + separator + "</getOrderByIDRe>");
+
                     } else if (message.equals("<finishOrder>")) {       //完成订单
                         String s = in.readLine();
                         String json = "";
@@ -123,6 +137,7 @@ public class ClientService implements Runnable {
                         String orderId = jsonObject.getString("orderId");
                         JSONObject returnObject = new JSONObject();
                         returnObject.put("order", orderService.getOrderByID(orderId));
+                        returnObject.put("isSelf",false);
                         this.sendMessage("<getOrderByIDRe>" + separator + returnObject.toString() + separator + "</getOrderByIDRe>");
 
                     } else if (message.equals("<updateUserInfo>")) {      //根据用户名获取订单号

@@ -150,6 +150,13 @@ public class OrderServiceImpl implements OrderService {
         return returnJson.toString();
     }
 
+    public String askMyOrder(String json){
+        JSONObject jsonObject = JSONObject.fromObject(json);
+        String userName = (String)jsonObject.get("userName");
+        return "error";
+
+    }
+
     public Order getOrderByID(String orderId) {
         Order order = null;
         for (int i = 0; i < orderList.size(); i++){
