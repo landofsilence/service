@@ -56,8 +56,8 @@ public class ClientService implements Runnable {
                             json = json + s + System.getProperty("line.separator");
                             s = in.readLine();
                         }
-                        orderService.publishOrder2List(json);
-                        this.sendMessage("<publishOrderRe>" + separator + "1" + separator + "</publishOrderRe>");
+                        String result = orderService.publishOrder2List(json);
+                        this.sendMessage("<publishOrderRe>" + separator + result + separator + "</publishOrderRe>");
                     } else if (message.equals("<takeOrder>")) {         //接受订单
                         String s = in.readLine();
                         String json = "";

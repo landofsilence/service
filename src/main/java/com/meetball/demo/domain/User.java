@@ -7,9 +7,9 @@ public class User implements Serializable {
     protected String userName;
     protected String name;
     protected String password;
-    protected String carNumber;
     protected int age;
     protected String telephone;
+    protected String carNumber;
     protected List<String> listOrderId;
     protected int imageNum;
 

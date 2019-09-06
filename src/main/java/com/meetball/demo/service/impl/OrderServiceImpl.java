@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void publishOrder2List(String orderJson) {
+    public String publishOrder2List(String orderJson) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         String cookie = jsonObject.getString("cookie");
         String orderStr = jsonObject.getString("order");
@@ -68,14 +68,21 @@ public class OrderServiceImpl implements OrderService {
         Order order = gson.fromJson(orderStr, new TypeToken<Order>(){}.getType());
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String ownerName = getInstanceCMap().get(cookie);
+        String ownerName = order.getOwnerName();
+        System.out.println("cookie ======================== " + cookie);
+        System.out.println("ownerName ======================== " + ownerName);
         order.setOrderId(order.getOwnerName() + sdf.format(date));
         order.setBeginStr(date);
 
         JSONObject returnJson = new JSONObject();
-        orderList.add(order);
-        returnJson.put("orderList",orderList);
-        System.out.println(returnJson.toString());
+        if (getOrderExist(ownerName)){
+            returnJson.put("result",2);
+        } else {
+            orderList.add(order);
+            returnJson.put("result",1);
+        }
+
+        return returnJson.toString();
     }
 
     @Override
@@ -148,21 +155,54 @@ public class OrderServiceImpl implements OrderService {
         for (int i = 0; i < orderList.size(); i++){
             if (orderList.get(i).getOrderId().equals(orderId)){
                 order = orderList.get(i);
+                break;
             }
         }
         return order;
+    }
+
+    public int getOrderIndexByID(String orderId) {
+        int index = -1;
+        for (int i = 0; i < orderList.size(); i++){
+            if (orderList.get(i).getOrderId().equals(orderId)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    public boolean getOrderExist(String ownerName) {
+        boolean result = false;
+        for (int i = 0; i < orderList.size(); i++){
+            if (orderList.get(i).getOwnerName().equals(ownerName)){
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     @Override
     public String getOrder(String orderJson) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         double lat = jsonObject.getDouble("lat");
-        System.out.println("lat ================== " + lat);
         double lon = jsonObject.getDouble("lon");
-        int index = jsonObject.getInt("index");
+        String orderId = jsonObject.getString("orderId");
+        System.out.println("orderId =============== " + orderId);
         JSONObject returnJson = new JSONObject();
         Order order = null;
-        for (int i = index; i < orderList.size(); i++){
+
+        int index = -1;
+        if (getOrderByID(orderId) != null){
+            index = getOrderIndexByID(orderId);
+        }
+
+        if (index == orderList.size() - 1){
+            index = -1;
+        }
+
+        for (int i = index + 1; i < orderList.size(); i++){
             order = orderList.get(i);
             if (order.getOwnerLat() < lat){  //判断是否在司机一定距离内，先随便写一下
                 System.out.println("i =============== " + i);

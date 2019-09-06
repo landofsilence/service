@@ -13,7 +13,7 @@ public interface OrderService {
     public List<Order> getOrderList();
     public void updateOrderList(List<Order> newList);
 
-    public void publishOrder2List(String orderJson);
+    public String publishOrder2List(String orderJson);
     public void takeOrder(String orderJson);
     public void finishOrder(String orderJson);
     public String getUserOrderList(String orderJson);

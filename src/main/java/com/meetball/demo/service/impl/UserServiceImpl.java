@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
             if(cookie == null)
                 cookie = getNewCookie();
             returnJson.put("cookie",cookie);
+
             getInstanceCMap().put(cookie,userName);
             return returnJson.toString();
         }
@@ -262,6 +263,11 @@ public class UserServiceImpl implements UserService {
             clientService.isUser = false;
             returnJson.put("result",2);
         }else{
+            if (OrderServiceImpl.getInstance().getOrderExist(userName)){
+                returnJson.put("published",true);
+            } else {
+                returnJson.put("published",false);
+            }
             clientService.isUser = true;
             returnJson.put("result",1);
         }

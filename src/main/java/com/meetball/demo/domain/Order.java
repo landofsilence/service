@@ -19,7 +19,34 @@ public class Order {
     private String driverName;
     private String beginStr;
     private String endStr;
+    private String orderStart;
+    private String orderEnd;
     private double amount;
+    private String telephone;
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getOrderStart() {
+        return orderStart;
+    }
+
+    public void setOrderStart(String orderStart) {
+        this.orderStart = orderStart;
+    }
+
+    public String getOrderEnd() {
+        return orderEnd;
+    }
+
+    public void setOrderEnd(String orderEnd) {
+        this.orderEnd = orderEnd;
+    }
 
     public String getOrderId() {
         return orderId;
