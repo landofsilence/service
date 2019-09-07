@@ -254,54 +254,48 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    public int getPublishedState(Order order){
+        if (order!=null){
+            if(!order.getDriverName().isEmpty()) {
+                if (!order.getBeginStr().isEmpty()) {
+                    if (!order.getEndStr().isEmpty()) {
+                        return 4;
+                    }
+                    return 3;
+                }
+                return 2;
+            }
+            return 1;
+        }
+        return 0;
+    }
+
     public String client(String matchJson,ClientService clientService){
         JSONObject jsonObject = JSONObject.fromObject(matchJson);
         String cookie = (String)jsonObject.get("cookie");
         String userName = getInstanceCMap().get(cookie);
-        JSONObject returnJson = new JSONObject();
-        if(userName == null){
-            userName = getInstanceDMap().get(cookie);
-            clientService.isUser = false;
-            Order order = OrderServiceImpl.getInstance().getDriverOrderExist(userName);
-            if (order!=null){
-                if(order.getBeginStr().isEmpty())
-                    returnJson.put("published",1);
-                else{
-                    returnJson.put("published",2);
-                }
-            } else {
-                returnJson.put("published",0);
-            }
-            returnJson.put("result",2);
-        }else{
-            Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
-            if (order!=null){
-                if(order.getDriverName()==null){
-                    //已发未接
-                    returnJson.put("published",1);
-                }
-                else if(order.getBeginStr().isEmpty()){
-                    //已接未出发
-                    returnJson.put("published",2);
-                }else {
-                    //已接已出发
-                    returnJson.put("published",3);
-                }
-            } else {
-                returnJson.put("published",0);
-            }
-            clientService.isUser = true;
-            returnJson.put("result",1);
-        }
+        String driverName = getInstanceDMap().get(cookie);
 
-        if(userName != null){
-        getInstanceSMap().put(userName,clientService);
-        clientService.userName = userName;
-        returnJson.put("userName",userName);
+        JSONObject returnJson = new JSONObject();
+        if(driverName != null){
+            clientService.isUser = false;
+            Order order = OrderServiceImpl.getInstance().getDriverOrderExist(driverName);
+            returnJson.put("published",getPublishedState(order));
+            returnJson.put("result",2);
+        }else if(userName != null){
+            clientService.isUser = true;
+            Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
+            returnJson.put("published",getPublishedState(order));
+            returnJson.put("result",1);
         }else{
             returnJson.put("result",-1);
+            return returnJson.toString();
         }
-        return returnJson.toString();
+
+            getInstanceSMap().put(userName,clientService);
+            clientService.userName = userName;
+            returnJson.put("userName",userName);
+            return returnJson.toString();
 
     }
 
