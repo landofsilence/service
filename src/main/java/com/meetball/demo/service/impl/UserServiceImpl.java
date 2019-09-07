@@ -276,10 +276,16 @@ public class UserServiceImpl implements UserService {
         }else{
             Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
             if (order!=null){
-                if(order.getDriverName()==null)
+                if(order.getDriverName()==null){
+                    //已发未接
                     returnJson.put("published",1);
-                else{
+                }
+                else if(order.getBeginStr().isEmpty()){
+                    //已接未出发
                     returnJson.put("published",2);
+                }else {
+                    //已接已出发
+                    returnJson.put("published",3);
                 }
             } else {
                 returnJson.put("published",0);
