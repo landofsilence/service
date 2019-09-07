@@ -3,8 +3,8 @@
 
 <mapper namespace="com.meetball.demo.persistence.OrderMapper">
     <insert id="insertOrder" parameterType="com.meetball.demo.domain.Order">
-          INSERT INTO orders (orderId, ownerName, driverName, driverLicense, beginStr, endStr, amount, ownerLon, ownerLat, endLon, endLat, orderStart, orderEnd, telephone)
-              VALUES   (#{orderId}, #{ownerName}, #{driverName}, #{driverLicense}, #{beginStr}, #{endStr}, #{amount}, #{ownerLon}, #{ownerLat}, #{endLon}, #{endLat},
+          INSERT INTO orders (orderId, ownerName, driverName, carNumber, beginStr, endStr, amount, ownerLon, ownerLat, endLon, endLat, orderStart, orderEnd, telephone)
+              VALUES   (#{orderId}, #{ownerName}, #{driverName}, #{carNumber}, #{beginStr}, #{endStr}, #{amount}, #{ownerLon}, #{ownerLat}, #{endLon}, #{endLat},
               #{orderStart}, #{orderEnd}, #{telephone})
     </insert>
 

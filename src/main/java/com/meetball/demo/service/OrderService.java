@@ -20,4 +20,5 @@ public interface OrderService {
     public String getDriverOrderList(String orderJson);
     public String getOrderInfo(String orderJson);
     public String getOrder(String orderJson);
+    public String orderAction(String orderJson, int action);
 }

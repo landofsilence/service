@@ -20,6 +20,11 @@ public class ClientService implements Runnable {
     private String message = "";
     public String userName;
     public boolean isUser = true;
+
+    public static final int CANCEL = 1;
+    public static final int ONCAR = 2;
+    public static final int FINISH = 3;
+
     String separator = System.getProperty("line.separator");
     File file;
 
@@ -139,6 +144,24 @@ public class ClientService implements Runnable {
                         returnObject.put("order", orderService.getOrderByID(orderId));
                         returnObject.put("isSelf",false);
                         this.sendMessage("<getOrderByIDRe>" + separator + returnObject.toString() + separator + "</getOrderByIDRe>");
+
+                    } else if (message.equals("<orderAction>")) {      //根据订单ID获取订单详情
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</orderAction>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        JSONObject jsonObject = JSONObject.fromObject(json);
+                        int action = jsonObject.getInt("action");
+                        JSONObject returnObject = new JSONObject();
+                        switch (action){
+                            case CANCEL:returnObject.put("action", CANCEL);break;
+                            case ONCAR:returnObject.put("action", ONCAR);break;
+                            case FINISH:returnObject.put("action", FINISH);break;
+                        }
+                        String result = orderService.orderAction(json, action);
+                        this.sendMessage("<orderActionRe>" + separator + result + separator + "</orderActionRe>");
 
                     } else if (message.equals("<updateUserInfo>")) {      //根据用户名获取订单号
                         String s = in.readLine();

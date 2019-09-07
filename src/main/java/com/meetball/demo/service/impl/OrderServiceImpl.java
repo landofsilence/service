@@ -20,6 +20,10 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    public static final int CANCEL = 1;
+    public static final int ONCAR = 2;
+    public static final int FINISH = 3;
+
     private List<Order> orderList = new ArrayList<Order>();
 
     public static OrderServiceImpl instance;
@@ -94,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDriverName(userName);
 
         JSONObject returnJson = new JSONObject();
-        orderList.add(order);
+        orderList.set(getOrderIndexByID(orderId), order);
         returnJson.put("orderList",orderList);
         System.out.println(returnJson.toString());
     }
@@ -237,5 +241,41 @@ public class OrderServiceImpl implements OrderService {
         }
         returnJson.put("order", order);
         return returnJson.toString();
+    }
+
+    @Override
+    public String orderAction(String orderJson, int action) {
+        JSONObject jsonObject = JSONObject.fromObject(orderJson);
+        String orderId = jsonObject.getString("orderId");
+        JSONObject returnObject = new JSONObject();
+        Order order;
+        switch (action){
+            case CANCEL:
+                order = getOrderByID(orderId);
+                if (!order.getBeginStr().isEmpty()){
+                    returnObject.put("result", 0);
+                } else {
+                    orderList.remove(getOrderIndexByID(orderId));
+                    returnObject.put("result", 1);
+                }
+                returnObject.put("action", CANCEL);
+                break;
+            case ONCAR:
+                order = getOrderByID(orderId);
+                order.setBeginStr(new Date());
+                orderList.set(getOrderIndexByID(orderId), order);
+                returnObject.put("action", ONCAR);
+                returnObject.put("result", 1);
+                break;
+            case FINISH:
+                order = getOrderByID(orderId);
+                order.setEndStr(new Date());
+                orderMapper.insertOrder(order);
+                orderList.remove(order.getOrderId());
+                returnObject.put("action", FINISH);
+                returnObject.put("result", 1);
+                break;
+        }
+        return returnObject.toString();
     }
 }
