@@ -23,5 +23,9 @@
         SELECT imageNum FROM users WHERE userName = #{userName}
     </select>
 
+    <select id="getMyFavoriteDriverList" resultType="com.meetball.demo.domain.Driver">
+        SELECT * FROM favorite, drivers, users WHERE favorite.user = #{userName} AND drivers.userName = favorite.driverName AND drivers.userName = users.userName
+    </select>
+
 
 </mapper>

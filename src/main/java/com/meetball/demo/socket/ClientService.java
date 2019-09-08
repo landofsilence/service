@@ -163,7 +163,18 @@ public class ClientService implements Runnable {
                         String result = orderService.orderAction(json, action);
                         this.sendMessage("<orderActionRe>" + separator + result + separator + "</orderActionRe>");
 
-                    }else if(message.equals("<myLocation>"))
+                    } else if (message.equals("<getMyFavoriteDriverList>")) {      //v
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</getMyFavoriteDriverList>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        JSONObject returnObject = new JSONObject();
+                        String result = userService.getMyFavoriteDriverList(json);
+                        this.sendMessage("<getMyFavoriteDriverListRe>" + separator + result + separator + "</getMyFavoriteDriverListRe>");
+
+                    } else if(message.equals("<myLocation>"))
                     {
                         String s = in.readLine();
                         String json = "";

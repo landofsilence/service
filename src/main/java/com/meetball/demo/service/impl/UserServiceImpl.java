@@ -412,4 +412,16 @@ public class UserServiceImpl implements UserService {
 
         return returnJson.toString();
     }
+
+    @Override
+    public String getMyFavoriteDriverList(String json) {
+        JSONObject jsonInfo = JSONObject.fromObject(json);
+        String userName = jsonInfo.getString("userName");
+
+        List<Driver> driverList = usermapper.getMyFavoriteDriverList(userName);
+        JSONObject returnJson = new JSONObject();
+        returnJson.put("driverList",driverList);
+
+        return returnJson.toString();
+    }
 }

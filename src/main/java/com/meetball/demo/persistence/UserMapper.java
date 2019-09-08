@@ -1,5 +1,6 @@
 package com.meetball.demo.persistence;
 
+import com.meetball.demo.domain.Driver;
 import com.meetball.demo.domain.Match;
 import com.meetball.demo.domain.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,8 @@ public interface UserMapper {
     public int getImageNum(@Param("userName")String userName);
 
     public boolean updateUserInfo(User user);
+
+    public List<Driver> getMyFavoriteDriverList(String userName);
 
     //public List<Match> getAllMatch(@Param("method")int method);
 
