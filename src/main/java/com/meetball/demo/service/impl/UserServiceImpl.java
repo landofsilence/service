@@ -255,10 +255,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public int getPublishedState(Order order){
-        if (order!=null){
-            if(!order.getDriverName().isEmpty()) {
-                if (!order.getBeginStr().isEmpty()) {
-                    if (!order.getEndStr().isEmpty()) {
+        if (order != null){
+            if(order.getDriverName() != null) {
+                if (order.getBeginStr() != null) {
+                    if (order.getEndStr() != null) {
                         return 4;
                     }
                     return 3;

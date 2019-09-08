@@ -222,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject returnJson = new JSONObject();
         if(clientService.isUser){
             Order order = getOrderExist_Order(clientService.userName);
-            if(order != null && !order.getDriverName().isEmpty()){
+            if(order != null && order.getDriverName() != null){
             String driverName = order.getDriverName();
             returnJson.put("latitude",latitudeMap.get(driverName));
             returnJson.put("longtitude",latitudeMap.get(driverName));
@@ -233,7 +233,7 @@ public class OrderServiceImpl implements OrderService {
         }
         else{
             Order order = getDriverOrderExist(clientService.userName);
-            if(order != null && !order.getOwnerName().isEmpty()){
+            if(order != null && order.getOwnerName() != null){
                 String ownerName = order.getOwnerName();
                 returnJson.put("latitude",latitudeMap.get(ownerName));
                 returnJson.put("longtitude",latitudeMap.get(ownerName));
@@ -285,7 +285,7 @@ public class OrderServiceImpl implements OrderService {
         switch (action){
             case CANCEL:
                 order = getOrderByID(orderId);
-                if (!order.getBeginStr().isEmpty()){
+                if (order.getBeginStr() != null){
                     returnObject.put("result", 0);
                 } else {
                     orderList.remove(getOrderIndexByID(orderId));
