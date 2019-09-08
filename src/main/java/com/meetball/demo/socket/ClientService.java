@@ -163,7 +163,21 @@ public class ClientService implements Runnable {
                         String result = orderService.orderAction(json, action);
                         this.sendMessage("<orderActionRe>" + separator + result + separator + "</orderActionRe>");
 
-                    } else if (message.equals("<updateUserInfo>")) {      //根据用户名获取订单号
+                    }else if(message.equals("<myLocation>"))
+                    {
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</myLocation>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        JSONObject jsonObject = JSONObject.fromObject(json);
+                        String result = orderService.myLocation(jsonObject,this);
+                        this.sendMessage("<myLocationRe>" + separator + result + separator + "</myLocationRe>");
+
+                    }
+
+                    else if (message.equals("<updateUserInfo>")) {      //根据用户名获取订单号
                         String s = in.readLine();
                         String json = "";
                         while (!s.equals("</updateUserInfo>")) {

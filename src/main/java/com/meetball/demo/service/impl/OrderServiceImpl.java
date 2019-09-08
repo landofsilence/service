@@ -28,19 +28,19 @@ public class OrderServiceImpl implements OrderService {
 
     public static OrderServiceImpl instance;
     String separator = System.getProperty("line.separator");
-    private static HashMap<String, ClientService> socketMap;//存放数据为，userName-对应ClientService
-    private static HashMap<String, String> cookieMap;//存放数据为,cookie-对应userName
+    private static HashMap<String,Double> mylocationLat;
+    private static HashMap<String,Double> mylocationLon;
 
-    public static HashMap<String,String> getInstanceCMap(){//控制单例cookiemap
-        if(cookieMap == null)
-            cookieMap = new HashMap<String,String>();
-        return cookieMap;
+    public static HashMap<String,Double> getLocationMapLat(){//控制单例cookiemap
+        if(mylocationLat == null)
+            mylocationLat = new HashMap<String,Double>();
+        return mylocationLat;
     }
 
-    public static HashMap<String,ClientService> getInstanceSMap(){//控制单例cookiemap
-        if(socketMap == null)
-            socketMap = new HashMap<String,ClientService>();
-        return socketMap;
+    public static HashMap<String,Double> getLocationMapLon(){//控制单例cookiemap
+        if(mylocationLon == null)
+            mylocationLon = new HashMap<String,Double>();
+        return mylocationLon;
     }
 
     public OrderServiceImpl(){
@@ -210,6 +210,39 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return result;
+    }
+
+    public String myLocation(JSONObject jsonObject,ClientService clientService){
+        HashMap<String,Double> latitudeMap = getLocationMapLat();
+        HashMap<String,Double> longtitudeMap = getLocationMapLon();
+        Double latitude = (Double) jsonObject.get("latitude");
+        Double longtitude = (Double) jsonObject.get("longtitude");
+        latitudeMap.put(clientService.userName,latitude);
+        longtitudeMap.put(clientService.userName,longtitude);
+        JSONObject returnJson = new JSONObject();
+        if(clientService.isUser){
+            Order order = getOrderExist_Order(clientService.userName);
+            if(order != null && !order.getDriverName().isEmpty()){
+            String driverName = order.getDriverName();
+            returnJson.put("latitude",latitudeMap.get(driverName));
+            returnJson.put("longtitude",latitudeMap.get(driverName));
+            }
+            else {
+                returnJson.put("no_one",true);
+            }
+        }
+        else{
+            Order order = getDriverOrderExist(clientService.userName);
+            if(order != null && !order.getOwnerName().isEmpty()){
+                String ownerName = order.getOwnerName();
+                returnJson.put("latitude",latitudeMap.get(ownerName));
+                returnJson.put("longtitude",latitudeMap.get(ownerName));
+            }
+            else {
+                returnJson.put("no_one",true);
+            }
+        }
+        return returnJson.toString();
     }
 
     @Override
