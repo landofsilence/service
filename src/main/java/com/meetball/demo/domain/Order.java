@@ -19,6 +19,7 @@ public class Order {
     private String driverName;
     private String beginStr;
     private String endStr;
+    private String sendStr;//下订单时间
     private String orderStart;
     private String orderEnd;
     private double amount;
@@ -120,6 +121,15 @@ public class Order {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(beginTime);
         beginStr = dateString;
+    }
+    public String getSendStr() {
+        return sendStr;
+    }
+
+    public void setSendStr(Date beginTime) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(beginTime);
+        sendStr = dateString;
     }
 
     public String getEndStr() {

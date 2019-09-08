@@ -82,8 +82,14 @@ public class ClientService implements Runnable {
                         JSONObject jsonObject = JSONObject.fromObject(json);
                         String userName = jsonObject.getString("userName");
                         JSONObject returnObject = new JSONObject();
+                        if(isUser){
                         returnObject.put("order", orderService.getOrderExist_Order(userName));
                         returnObject.put("isSelf",true);
+                        }else{
+                            returnObject.put("order", orderService.getDriverOrderExist(userName));
+                            returnObject.put("isSelf",true);
+                        }
+
                         this.sendMessage("<getOrderByIDRe>" + separator + returnObject.toString() + separator + "</getOrderByIDRe>");
 
                     } else if (message.equals("<finishOrder>")) {       //完成订单
