@@ -346,11 +346,17 @@ public class OrderServiceImpl implements OrderService {
         switch (action){
             case CANCEL:
                 order = getOrderByID(orderId);
-                if (order.getBeginStr() != null){
-                    returnObject.put("result", 0);
+                ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
+                if (clientService.isUser) {
+                    if (order.getBeginStr() != null) {
+                        returnObject.put("result", 0);
+                    } else {
+                        orderList.remove(getOrderIndexByID(orderId));
+                        returnObject.put("result", 1);
+                    }
                 } else {
-                    orderList.remove(getOrderIndexByID(orderId));
-                    returnObject.put("result", 1);
+                    order.setDriverName(null);
+                    orderList.set(getOrderIndexByID(orderId), order);
                 }
                 returnObject.put("action", CANCEL);
                 break;
