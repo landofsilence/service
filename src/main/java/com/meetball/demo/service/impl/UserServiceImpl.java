@@ -282,21 +282,23 @@ public class UserServiceImpl implements UserService {
             Order order = OrderServiceImpl.getInstance().getDriverOrderExist(driverName);
             returnJson.put("published",getPublishedState(order));
             returnJson.put("result",2);
+            getInstanceSMap().put(driverName,clientService);
+            clientService.userName = driverName;
+            returnJson.put("userName",driverName);
+            return returnJson.toString();
         }else if(userName != null){
             clientService.isUser = true;
             Order order = OrderServiceImpl.getInstance().getOrderExist_Order(userName);
             returnJson.put("published",getPublishedState(order));
             returnJson.put("result",1);
-        }else{
-            returnJson.put("result",-1);
-            return returnJson.toString();
-        }
-
             getInstanceSMap().put(userName,clientService);
             clientService.userName = userName;
             returnJson.put("userName",userName);
             return returnJson.toString();
-
+        }else{
+            returnJson.put("result",-1);
+            return returnJson.toString();
+        }
     }
 
     public String getmatchinfo(String matchJson){
