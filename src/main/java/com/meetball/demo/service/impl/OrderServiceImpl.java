@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
             ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
             JSONObject jsonClient = new JSONObject();
             jsonClient.put("order", order);
+            jsonClient.put("isSelf", true);
             clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
         } else {
             returnJson.put("result", 2);
