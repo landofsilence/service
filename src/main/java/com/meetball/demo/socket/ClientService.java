@@ -54,6 +54,7 @@ public class ClientService implements Runnable {
             while (true) {
                 if ((message = in.readLine()) != null) {
                     // 当客户端发送的信息为：exit时，关闭连接
+                    System.out.println(message);
                     if (message.equals("<publishOrder2List>")) {       //发布订单
                         String s = in.readLine();
                         String json = "";

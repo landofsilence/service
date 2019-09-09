@@ -241,7 +241,7 @@ public class OrderServiceImpl implements OrderService {
             if(order != null && order.getDriverName() != null){
             String driverName = order.getDriverName();
             returnJson.put("latitude",latitudeMap.get(driverName));
-            returnJson.put("longtitude",latitudeMap.get(driverName));
+            returnJson.put("longtitude",longtitudeMap.get(driverName));
             }
             else {
                 returnJson.put("no_one",true);
@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService {
             if(order != null && order.getOwnerName() != null){
                 String ownerName = order.getOwnerName();
                 returnJson.put("latitude",latitudeMap.get(ownerName));
-                returnJson.put("longtitude",latitudeMap.get(ownerName));
+                returnJson.put("longtitude",longtitudeMap.get(ownerName));
             }
             else {
                 returnJson.put("no_one",true);
@@ -281,17 +281,22 @@ public class OrderServiceImpl implements OrderService {
             index = -1;
         }
 
+        Order cacheOrder = null;
+
+        boolean isCircle = false;
         for (int i = index + 1; i < orderList.size(); i++){
-            order = orderList.get(i);
-            if (order.getDriverName() == null) {    //该订单尚未被接单
-                if (getmeter(order.getOwnerLon(), order.getOwnerLat(), lon, lat) < 3000) {  //判断是否在司机一定距离内，先随便写一下
+            cacheOrder = orderList.get(i);
+            if (cacheOrder.getDriverName()==null) {    //该订单尚未被接单
+                if (getmeter(cacheOrder.getOwnerLon(), cacheOrder.getOwnerLat(), lon, lat) < 3000) {  //判断是否在司机一定距离内，先随便写一下
+                    order = cacheOrder;
                     break;
                 }
-            } else {
-                continue;
             }
-            order = null;
             if (i == orderList.size() - 1){
+                i = -1;
+                isCircle = true;
+            }
+            if(isCircle && i == index) {
                 order = new Order();
                 order.setOrderId("-1");
                 break;
