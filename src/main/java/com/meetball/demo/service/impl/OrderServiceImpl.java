@@ -8,6 +8,7 @@ import com.meetball.demo.domain.User;
 import com.meetball.demo.persistence.OrderMapper;
 import com.meetball.demo.service.OrderService;
 import com.meetball.demo.socket.ClientService;
+import com.meetball.demo.socket.SocketServer;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
+    private static String fetch = System.getProperty("line.separator");
 
     public static final int CANCEL = 1;
     public static final int ONCAR = 2;
@@ -91,9 +93,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String takeOrder(String orderJson) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
-        String cookie = jsonObject.getString("cookie");
         String orderId = jsonObject.getString("orderId");
         String userName = jsonObject.getString("userName");
+
 
         Gson gson = new Gson();
         Order order = getOrderByID(orderId);
@@ -103,6 +105,10 @@ public class OrderServiceImpl implements OrderService {
             order.setDriverName(userName);
             orderList.set(getOrderIndexByID(orderId), order);
             returnJson.put("result", 1);
+            ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
+            JSONObject jsonClient = new JSONObject();
+            jsonClient.put("order", order);
+            clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
         } else {
             returnJson.put("result", 2);
         }
