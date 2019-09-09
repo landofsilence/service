@@ -250,8 +250,8 @@ public class OrderServiceImpl implements OrderService {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         double lat = jsonObject.getDouble("lat");
         double lon = jsonObject.getDouble("lon");
-        mylocationLat.put(userName,lat);
-        mylocationLat.put(userName,lon);
+        getLocationMapLat().put(userName,lat);
+        getLocationMapLon().put(userName,lon);
         String orderId = jsonObject.getString("orderId");
         System.out.println("orderId =============== " + orderId);
         JSONObject returnJson = new JSONObject();
