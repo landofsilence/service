@@ -190,9 +190,11 @@ public class OrderServiceImpl implements OrderService {
     public Order getDriverOrderExist(String ownerName) {
         Order result = null;
         for (int i = 0; i < orderList.size(); i++){
-            if (orderList.get(i).getDriverName().equals(ownerName)){
-                result = orderList.get(i);
-                break;
+            if (orderList.get(i).getDriverName() != null) {
+                if (orderList.get(i).getDriverName().equals(ownerName)) {
+                    result = orderList.get(i);
+                    break;
+                }
             }
         }
         return result;
