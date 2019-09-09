@@ -12,6 +12,8 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -87,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void takeOrder(String orderJson) {
+    public String takeOrder(String orderJson) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         String cookie = jsonObject.getString("cookie");
         String orderId = jsonObject.getString("orderId");
@@ -95,12 +97,17 @@ public class OrderServiceImpl implements OrderService {
 
         Gson gson = new Gson();
         Order order = getOrderByID(orderId);
-        order.setDriverName(userName);
 
         JSONObject returnJson = new JSONObject();
-        orderList.set(getOrderIndexByID(orderId), order);
-        returnJson.put("orderList",orderList);
-        System.out.println(returnJson.toString());
+        if (order.getDriverName() == null) {    //该订单尚未被接单
+            order.setDriverName(userName);
+            orderList.set(getOrderIndexByID(orderId), order);
+            returnJson.put("result", 1);
+        } else {
+            returnJson.put("result", 2);
+        }
+
+        return  returnJson.toString();
     }
 
     @Override
@@ -253,7 +260,6 @@ public class OrderServiceImpl implements OrderService {
         mylocationLat.put(userName,lat);
         mylocationLat.put(userName,lon);
         String orderId = jsonObject.getString("orderId");
-        System.out.println("orderId =============== " + orderId);
         JSONObject returnJson = new JSONObject();
         Order order = null;
 
@@ -268,14 +274,60 @@ public class OrderServiceImpl implements OrderService {
 
         for (int i = index + 1; i < orderList.size(); i++){
             order = orderList.get(i);
-            if (order.getOwnerLat() < lat){  //判断是否在司机一定距离内，先随便写一下
-                System.out.println("i =============== " + i);
-                break;
+            if (order.getDriverName() == null) {    //该订单尚未被接单
+                if (getmeter(order.getOwnerLon(), order.getOwnerLat(), lon, lat) < 3000) {  //判断是否在司机一定距离内，先随便写一下
+                    break;
+                }
+            } else {
+                continue;
             }
             order = null;
+            if (i == orderList.size() - 1){
+                order = new Order();
+                order.setOrderId("-1");
+                break;
+            }
         }
+
+        if (order == null){
+            order = new Order();
+            order.setOrderId("-1");
+        }
+
         returnJson.put("order", order);
         return returnJson.toString();
+    }
+
+    private static final double EARTH_RADIUS = 6378.137;
+
+    private static double rad(double d){
+        return d * Math.PI / 180.0;
+    }
+
+    /**
+     * 根据经纬度算距离
+     * @param long1
+     * @param lat1
+     * @param long2
+     * @param lat2
+     * @return
+     */
+    public static double getmeter(double long1, double lat1, double long2, double lat2) {
+        double a, b, d, sa2, sb2;
+        lat1 = rad(lat1);
+        lat2 = rad(lat2);
+        a = lat1 - lat2;
+        b = rad(long1 - long2);
+
+        sa2 = Math.sin(a / 2.0);
+        sb2 = Math.sin(b / 2.0);
+        d = 2   * EARTH_RADIUS
+                * Math.asin(Math.sqrt(sa2 * sa2 + Math.cos(lat1)
+                * Math.cos(lat2) * sb2 * sb2));
+        d= d * 1000;
+        BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.UP);
+        return bg.doubleValue();
+
     }
 
     @Override

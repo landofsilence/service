@@ -71,7 +71,9 @@ public class ClientService implements Runnable {
                             s = in.readLine();
                         }
                         orderService.takeOrder(json);
-                        this.sendMessage("<takeOrderRe>" + separator + "1" + separator + "</takeOrderRe>");
+                        JSONObject returnObject = new JSONObject();
+                        returnObject.put("result",1);
+                        this.sendMessage("<takeOrderRe>" + separator + returnObject.toString() + separator + "</takeOrderRe>");
                     } else if (message.equals("<askMyOrder>")) {         //接受订单
                         String s = in.readLine();
                         String json = "";
@@ -83,8 +85,8 @@ public class ClientService implements Runnable {
                         String userName = jsonObject.getString("userName");
                         JSONObject returnObject = new JSONObject();
                         if(isUser){
-                        returnObject.put("order", orderService.getOrderExist_Order(userName));
-                        returnObject.put("isSelf",true);
+                            returnObject.put("order", orderService.getOrderExist_Order(userName));
+                            returnObject.put("isSelf",true);
                         }else{
                             returnObject.put("order", orderService.getDriverOrderExist(userName));
                             returnObject.put("isSelf",true);

@@ -14,7 +14,7 @@ public interface OrderService {
     public void updateOrderList(List<Order> newList);
 
     public String publishOrder2List(String orderJson);
-    public void takeOrder(String orderJson);
+    public String takeOrder(String orderJson);
     public void finishOrder(String orderJson);
     public String getUserOrderList(String orderJson);
     public String getDriverOrderList(String orderJson);
