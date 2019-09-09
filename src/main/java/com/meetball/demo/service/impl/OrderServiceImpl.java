@@ -246,10 +246,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String getOrder(String orderJson) {
+    public String getOrder(String orderJson,String userName) {
         JSONObject jsonObject = JSONObject.fromObject(orderJson);
         double lat = jsonObject.getDouble("lat");
         double lon = jsonObject.getDouble("lon");
+        mylocationLat.put(userName,lat);
+        mylocationLat.put(userName,lon);
         String orderId = jsonObject.getString("orderId");
         System.out.println("orderId =============== " + orderId);
         JSONObject returnJson = new JSONObject();

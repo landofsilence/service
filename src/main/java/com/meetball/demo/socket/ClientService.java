@@ -212,7 +212,7 @@ public class ClientService implements Runnable {
                             s = in.readLine();
                         }
                         JSONObject jsonObject = JSONObject.fromObject(json);
-                        String result = orderService.getOrder(jsonObject.toString());
+                        String result = orderService.getOrder(jsonObject.toString(),userName);
                         this.sendMessage( "<getOrderRe>" + separator + result + separator + "</getOrderRe>");
                     } else if (message.equals("<getInfo>")) {
                         String s = in.readLine();
