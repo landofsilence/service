@@ -343,16 +343,20 @@ public class OrderServiceImpl implements OrderService {
         String orderId = jsonObject.getString("orderId");
         JSONObject returnObject = new JSONObject();
         Order order;
+        order = getOrderByID(orderId);
+        ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
+        JSONObject jsonClient = new JSONObject();
         switch (action){
             case CANCEL:
-                order = getOrderByID(orderId);
-                ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
                 if (clientService.isUser) {
                     if (order.getBeginStr() != null) {
                         returnObject.put("result", 0);
                     } else {
                         orderList.remove(getOrderIndexByID(orderId));
                         returnObject.put("result", 1);
+                        jsonClient.put("order", order);
+                        jsonClient.put("isSelf", true);
+                        clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
                     }
                 } else {
                     order.setDriverName(null);
@@ -361,19 +365,23 @@ public class OrderServiceImpl implements OrderService {
                 returnObject.put("action", CANCEL);
                 break;
             case ONCAR:
-                order = getOrderByID(orderId);
                 order.setBeginStr(new Date());
                 orderList.set(getOrderIndexByID(orderId), order);
                 returnObject.put("action", ONCAR);
                 returnObject.put("result", 1);
+                jsonClient.put("order", order);
+                jsonClient.put("isSelf", true);
+                clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
                 break;
             case FINISH:
-                order = getOrderByID(orderId);
                 order.setEndStr(new Date());
                 orderMapper.insertOrder(order);
                 orderList.remove(order.getOrderId());
                 returnObject.put("action", FINISH);
                 returnObject.put("result", 1);
+                jsonClient.put("order", order);
+                jsonClient.put("isSelf", true);
+                clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
                 break;
         }
         return returnObject.toString();
