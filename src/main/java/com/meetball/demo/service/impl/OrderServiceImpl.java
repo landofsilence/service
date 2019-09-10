@@ -240,6 +240,13 @@ public class OrderServiceImpl implements OrderService {
             Order order = getOrderExist_Order(clientService.userName);
             if(order != null && order.getDriverName() != null){
             String driverName = order.getDriverName();
+            Double moneyCount = order.getAmount();
+            if(moneyCount!=null)
+            {
+                returnJson.put("moneyCount",moneyCount);
+            }else{
+                returnJson.put("moneyCount",0);
+            }
             returnJson.put("latitude",latitudeMap.get(driverName));
             returnJson.put("longtitude",longtitudeMap.get(driverName));
             }
@@ -249,10 +256,13 @@ public class OrderServiceImpl implements OrderService {
         }
         else{
             Order order = getDriverOrderExist(clientService.userName);
+            Double moneyCount = (Double) jsonObject.get("moneyCount");
+            order.setAmount(moneyCount);
             if(order != null && order.getOwnerName() != null){
                 String ownerName = order.getOwnerName();
                 returnJson.put("latitude",latitudeMap.get(ownerName));
                 returnJson.put("longtitude",longtitudeMap.get(ownerName));
+                returnJson.put("moneyCount",moneyCount);
             }
             else {
                 returnJson.put("no_one",true);
