@@ -403,4 +403,19 @@ public class OrderServiceImpl implements OrderService {
         }
         return returnObject.toString();
     }
+
+    @Override
+    public String updateComment(String orderJson) {
+        JSONObject jsonObject = JSONObject.fromObject(orderJson);
+        String orderId = jsonObject.getString("orderId");
+        String comment = jsonObject.getString("comment");
+        int star = jsonObject.getInt("star");
+        JSONObject returnJson = new JSONObject();
+        if (orderMapper.updateComment(orderId, star, comment)){
+            returnJson.put("result", 1);
+        } else {
+            returnJson.put("result", -1);
+        }
+        return returnJson.toString();
+    }
 }

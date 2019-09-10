@@ -16,6 +16,8 @@ public interface OrderMapper {
 
     public Order getOrderInfo(String orderId);
 
+    public boolean updateComment(String orderId, int star, String comment);
+
     //public List<Match> getAllMatch(@Param("method")int method);
 
     //public void updateMatch(Match match);

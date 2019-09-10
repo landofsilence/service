@@ -20,5 +20,9 @@
         SELECT * FROM orders WHERE orderId = #{orderId}
     </select>
 
+    <update id="updateComment">
+        UPDATE orders SET star = #{star}, comment = #{comment} WHERE orderId = #{orderId}
+    </update>
+
 
 </mapper>

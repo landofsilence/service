@@ -21,4 +21,5 @@ public interface OrderService {
     public String getOrderInfo(String orderJson);
     public String getOrder(String orderJson,String userName);
     public String orderAction(String orderJson, int action);
+    public String updateComment(String orderJson);
 }

@@ -172,6 +172,16 @@ public class ClientService implements Runnable {
                         String result = orderService.orderAction(json, action);
                         this.sendMessage("<orderActionRe>" + separator + result + separator + "</orderActionRe>");
 
+                    } else if (message.equals("<updateComment>")) {      //根据订单ID获取订单详情
+                        String s = in.readLine();
+                        String json = "";
+                        while (!s.equals("</updateComment>")) {
+                            json = json + s + System.getProperty("line.separator");
+                            s = in.readLine();
+                        }
+                        String result = orderService.updateComment(json);
+                        this.sendMessage("<updateCommentRe>" + separator + result + separator + "</updateCommentRe>");
+
                     } else if (message.equals("<getMyFavoriteDriverList>")) {      //v
                         String s = in.readLine();
                         String json = "";
