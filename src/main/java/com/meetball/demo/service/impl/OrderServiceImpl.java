@@ -104,12 +104,10 @@ public class OrderServiceImpl implements OrderService {
         if (order.getDriverName() == null) {    //该订单尚未被接单
             order.setDriverName(userName);
             orderList.set(getOrderIndexByID(orderId), order);
-            returnJson.put("result", 1);
             ClientService clientService = UserServiceImpl.getInstance().getInstanceSMap().get(order.getOwnerName());
-            JSONObject jsonClient = new JSONObject();
-            jsonClient.put("order", order);
-            jsonClient.put("isSelf", true);
-            clientService.sendMessage("<getOrderByIDRe>" + fetch + jsonClient.toString() + fetch + "</getOrderByIDRe>");
+            returnJson.put("order", order);
+            returnJson.put("isSelf", true);
+            clientService.sendMessage("<getOrderByIDRe>" + fetch + returnJson.toString() + fetch + "</getOrderByIDRe>");
         } else {
             returnJson.put("result", 2);
         }
