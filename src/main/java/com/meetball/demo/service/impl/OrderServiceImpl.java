@@ -392,8 +392,8 @@ public class OrderServiceImpl implements OrderService {
                 break;
             case FINISH:
                 order.setEndStr(new Date());
-                orderMapper.insertOrder(order);
-                orderList.remove(getOrderIndexByID(order.getOrderId()));
+                //orderMapper.insertOrder(order);
+                //orderList.remove(getOrderIndexByID(order.getOrderId()));
                 returnObject.put("action", FINISH);
                 returnObject.put("result", 1);
                 jsonClient.put("order", order);
@@ -410,6 +410,12 @@ public class OrderServiceImpl implements OrderService {
         String orderId = jsonObject.getString("orderId");
         String comment = jsonObject.getString("comment");
         int star = jsonObject.getInt("star");
+        Order order = getOrderByID(orderId);
+        orderMapper.insertOrder(order);
+        if (star == 5){
+            orderMapper.addFavorite(order.getOwnerName(),order.getDriverName() );
+        }
+        orderList.remove(getOrderIndexByID(order.getOrderId()));
         JSONObject returnJson = new JSONObject();
         if (orderMapper.updateComment(orderId, star, comment)){
             returnJson.put("result", 1);

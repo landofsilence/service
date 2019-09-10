@@ -18,6 +18,8 @@ public interface OrderMapper {
 
     public boolean updateComment(String orderId, int star, String comment);
 
+    public boolean addFavorite(String user, String driverName);
+
     //public List<Match> getAllMatch(@Param("method")int method);
 
     //public void updateMatch(Match match);

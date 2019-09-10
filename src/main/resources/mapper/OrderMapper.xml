@@ -8,6 +8,10 @@
               #{orderStart}, #{orderEnd}, #{telephone})
     </insert>
 
+    <insert id="addFavorite" parameterType="String">
+          INSERT INTO favorite (user, driverName) values (#{user}, #{driverName})
+    </insert>
+
     <select id="getUserOrderList" resultType="com.meetball.demo.domain.Order">
         SELECT * FROM orders WHERE ownerName = #{userName}
     </select>
