@@ -383,7 +383,7 @@ public class OrderServiceImpl implements OrderService {
             case FINISH:
                 order.setEndStr(new Date());
                 orderMapper.insertOrder(order);
-                orderList.remove(order.getOrderId());
+                orderList.remove(getOrderIndexByID(order.getOrderId()));
                 returnObject.put("action", FINISH);
                 returnObject.put("result", 1);
                 jsonClient.put("order", order);
